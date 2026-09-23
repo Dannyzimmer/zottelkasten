@@ -84,5 +84,8 @@ npm run format
 ## Publicación
 
 Si publicas el plugin en otro repositorio, actualiza el campo `repository` de
-`package.json` y, si quieres habilitar actualizaciones automáticas, el
-`updateURL` en `zotero-plugin.config.ts`.
+`package.json`; el `update_url` del manifiesto se genera a partir de él.
+
+Zotero exige que `applications.zotero.update_url` exista y **no esté vacío**: un
+`update_url` vacío o ausente impide instalar el plugin. Por eso el valor por
+defecto apunta a las releases del repositorio indicado en `repository`.
