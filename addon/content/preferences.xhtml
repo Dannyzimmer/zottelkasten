@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html:linkset
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+>
+  <html:link rel="localization" href="__addonRef__-preferences.ftl" />
+</html:linkset>
+<groupbox onload="Zotero.__addonInstance__.hooks.onPrefsLoad(window)">
+  <label><html:h2 data-l10n-id="prefs-title"></html:h2></label>
+  <vbox>
+    <label data-l10n-id="prefs-output-dir-label"></label>
+    <hbox align="center">
+      <html:input type="text" id="__addonRef__-output-dir" preference="outputDir" style="flex: 1" />
+      <button id="__addonRef__-choose-folder" data-l10n-id="prefs-choose-folder" />
+    </hbox>
+    <description data-l10n-id="prefs-output-dir-help"></description>
+  </vbox>
+  <vbox>
+    <label data-l10n-id="prefs-style-label"></label>
+    <html:input type="text" id="__addonRef__-style" preference="styleID" />
+    <description data-l10n-id="prefs-style-help"></description>
+  </vbox>
+  <vbox>
+    <label data-l10n-id="prefs-template-label"></label>
+    <html:textarea id="__addonRef__-template" preference="template" rows="10" />
+    <description data-l10n-id="prefs-template-help"></description>
+  </vbox>
+  <vbox>
+    <checkbox
+      id="__addonRef__-show-comments"
+      preference="showComments"
+      data-l10n-id="prefs-show-comments"
+    />
+    <checkbox
+      id="__addonRef__-show-highlights"
+      preference="showHighlights"
+      data-l10n-id="prefs-show-highlights"
+    />
+  </vbox>
+</groupbox>

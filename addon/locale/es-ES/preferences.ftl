@@ -1,0 +1,13 @@
+prefs-title = Notas Zettelkasten
+prefs-output-dir-label = Carpeta de destino
+prefs-output-dir-help = Carpeta donde se crearán los archivos Markdown. Déjala vacía para desactivar la creación de archivos.
+prefs-choose-folder =
+    .label = Elegir…
+prefs-style-label = Estilo de cita
+prefs-style-help = ID del estilo CSL. Por defecto: APA 7.ª edición (http://www.zotero.org/styles/apa).
+prefs-template-label = Plantilla
+prefs-template-help = Marcadores: title, citation, cite y date (p. ej. YYYY-MM-DDTHH:mm:ssZ).
+prefs-show-comments =
+    .label = Incluir comentarios de las anotaciones
+prefs-show-highlights =
+    .label = Incluir el texto resaltado como cita
