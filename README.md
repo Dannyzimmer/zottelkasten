@@ -62,8 +62,19 @@ elige alguna de estas opciones:
 
 - **Copiar nota de bibliografía**
 - **Crear archivo de nota de bibliografía**
+- **Actualizar anotaciones**
 
-Si el archivo ya existe, se muestra un aviso y no se sobrescribe.
+La nota incluye las anotaciones de los PDF (comentario y texto resaltado) y las
+notas hijas del elemento.
+
+Si el archivo ya existe, al crearlo se muestra un aviso y no se sobrescribe.
+
+**Actualizar anotaciones** solo está activa si el archivo ya se ha creado (misma
+carpeta y nombre). Al pulsarla se pide confirmación, ya que se reemplaza todo el
+cuerpo del archivo (lo que hay después de la cabecera YAML) con las anotaciones
+y notas hijas actuales; la cabecera YAML no se toca. Si el elemento no tiene
+anotaciones ni notas hijas, no se modifica el archivo. Si el archivo no empieza
+por una cabecera YAML, se cancela para no perder datos.
 
 ## Desarrollo
 

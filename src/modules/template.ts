@@ -1,11 +1,10 @@
 import { formatNow } from "../utils/date";
 import { getPref } from "../utils/prefs";
-import type { ItemAnnotation } from "./annotations";
+import { collectAnnotations, collectChildNotes, type ItemAnnotation } from "./annotations";
 
 export interface RenderData {
   citation: string;
   cite: string;
-  annotations: ItemAnnotation[];
 }
 
 export function renderNote(item: Zotero.Item, data: RenderData): string {
@@ -18,15 +17,26 @@ export function renderNote(item: Zotero.Item, data: RenderData): string {
     .replace(/\{\{cite\}\}/g, data.cite)
     .replace(/\{\{date:([^}]+)\}\}/g, (_match, pattern: string) => formatNow(pattern));
 
-  const blocks = buildAnnotationBlocks(data.annotations);
-  if (blocks) {
-    output = `${output.replace(/\s*$/, "")}\n\n\n${blocks}`;
+  const body = renderBody(item);
+  if (body) {
+    output = `${output.replace(/\s*$/, "")}\n\n\n${body}`;
   }
 
   return output;
 }
 
-function buildAnnotationBlocks(annotations: ItemAnnotation[]): string {
+/**
+ * Build the note body from the item's PDF annotations and child notes.
+ * Always re-collected, so it can be reused to refresh an existing file.
+ */
+export function renderBody(item: Zotero.Item): string {
+  const blocks: string[] = [];
+  blocks.push(...buildAnnotationBlocks(collectAnnotations(item)));
+  blocks.push(...collectChildNotes(item));
+  return blocks.join("\n\n\n");
+}
+
+function buildAnnotationBlocks(annotations: ItemAnnotation[]): string[] {
   const showComments = getPref("showComments");
   const showHighlights = getPref("showHighlights");
   const blocks: string[] = [];
@@ -44,5 +54,5 @@ function buildAnnotationBlocks(annotations: ItemAnnotation[]): string {
     }
   }
 
-  return blocks.join("\n\n\n");
+  return blocks;
 }

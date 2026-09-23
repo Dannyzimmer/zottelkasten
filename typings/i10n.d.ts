@@ -3,13 +3,19 @@
 /* eslint-disable */
 // @ts-nocheck
 export type FluentMessageId =
+  | 'confirm-update'
   | 'copied'
   | 'error-file-exists'
+  | 'error-file-not-created'
   | 'error-generic'
+  | 'error-no-frontmatter'
   | 'error-no-output-dir'
   | 'file-created'
+  | 'file-updated'
   | 'menu-copy'
   | 'menu-create-file'
+  | 'menu-update'
+  | 'no-annotations'
   | 'no-item-selected'
   | 'prefs-choose-folder'
   | 'prefs-output-dir-help'

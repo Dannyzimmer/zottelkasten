@@ -1,3 +1,5 @@
+import { htmlToMarkdown } from "../utils/html";
+
 export interface ItemAnnotation {
   comment: string;
   text: string;
@@ -30,4 +32,21 @@ export function collectAnnotations(item: Zotero.Item): ItemAnnotation[] {
   }
 
   return result;
+}
+
+export function collectChildNotes(item: Zotero.Item): string[] {
+  const notes: string[] = [];
+
+  for (const noteID of item.getNotes()) {
+    const note = Zotero.Items.get(noteID);
+    if (!note || !note.isNote()) {
+      continue;
+    }
+    const markdown = htmlToMarkdown(note.getNote()).trim();
+    if (markdown) {
+      notes.push(markdown);
+    }
+  }
+
+  return notes;
 }

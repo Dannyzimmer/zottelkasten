@@ -1,13 +1,24 @@
 import { config } from "../../package.json";
 import { getString } from "../utils/locale";
-import { collectAnnotations } from "./annotations";
 import { copyToClipboard } from "./clipboard";
 import { generateCitation } from "./citation";
-import { ZettelkastenError, writeNoteFile } from "./fileWriter";
-import { renderNote } from "./template";
+import {
+  ZettelkastenError,
+  getNotePath,
+  noteExists,
+  readNote,
+  splitFrontmatter,
+  writeNoteBody,
+  writeNoteFile,
+} from "./fileWriter";
+import { renderBody, renderNote } from "./template";
 
 export interface MenuContext {
   items: Zotero.Item[];
+}
+
+export interface MenuShowingContext extends MenuContext {
+  setEnabled: (enabled: boolean) => void;
 }
 
 interface BuiltNote {
@@ -25,9 +36,8 @@ function getTargetItem(context: MenuContext): Zotero.Item | null {
 
 function buildNote(item: Zotero.Item): BuiltNote {
   const { citation, cite } = generateCitation(item);
-  const annotations = collectAnnotations(item);
   return {
-    content: renderNote(item, { citation, cite, annotations }),
+    content: renderNote(item, { citation, cite }),
     cite,
   };
 }
@@ -71,6 +81,59 @@ export async function runCreateFile(context: MenuContext): Promise<void> {
       }
     }
     alert(getString("error-generic", { error: String(error) }));
+  }
+}
+
+export async function runUpdateAnnotations(context: MenuContext): Promise<void> {
+  const item = getTargetItem(context);
+  if (!item) {
+    alert(getString("no-item-selected"));
+    return;
+  }
+
+  try {
+    const path = getNotePath(generateCitation(item).cite);
+    if (!path || !(await noteExists(path))) {
+      alert(getString("error-file-not-created"));
+      return;
+    }
+
+    const body = renderBody(item);
+    if (!body.trim()) {
+      notify(getString("no-annotations"));
+      return;
+    }
+
+    const win = Zotero.getMainWindow();
+    const confirmed = Services.prompt.confirm(
+      win as any,
+      config.addonName,
+      getString("confirm-update"),
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    const parts = splitFrontmatter(await readNote(path));
+    if (!parts) {
+      alert(getString("error-no-frontmatter"));
+      return;
+    }
+
+    await writeNoteBody(path, parts.frontmatter, body);
+    notify(getString("file-updated", { path }));
+  } catch (error) {
+    alert(getString("error-generic", { error: String(error) }));
+  }
+}
+
+export async function hasNoteFile(item: Zotero.Item): Promise<boolean> {
+  try {
+    const path = getNotePath(generateCitation(item).cite);
+    return !!path && (await noteExists(path));
+  } catch (error) {
+    Zotero.debug(`Zotero Zettelkasten: ${error}`);
+    return false;
   }
 }
 

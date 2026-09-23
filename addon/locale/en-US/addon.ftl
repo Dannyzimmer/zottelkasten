@@ -1,6 +1,11 @@
 no-item-selected = Select exactly one bibliographic item.
 copied = Bibliography note copied to clipboard.
 file-created = File created: { $path }
+file-updated = Annotations updated: { $path }
+no-annotations = There are no annotations or child notes to write.
+confirm-update = The notes content of the file will be overwritten and any annotations you added there may be lost. Do you want to continue?
 error-no-output-dir = Configure an output folder in the plugin settings first.
 error-file-exists = The file already exists and will not be overwritten: { $path }
+error-file-not-created = The note file has not been created yet.
+error-no-frontmatter = The file does not start with a YAML header; the update was aborted to avoid data loss.
 error-generic = The note could not be generated: { $error }
