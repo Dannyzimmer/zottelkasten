@@ -1,2 +1,4 @@
-menu-copy = Copy bibliography note
-menu-create-file = Create bibliography note file
+menu-copy =
+    .label = Copy bibliography note
+menu-create-file =
+    .label = Create bibliography note file

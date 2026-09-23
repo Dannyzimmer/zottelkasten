@@ -2,8 +2,11 @@ import { config } from "../../package.json";
 import { getLocaleID } from "../utils/locale";
 import { type MenuContext, runCopy, runCreateFile } from "./actions";
 
+let registeredMenuID: string | false = false;
+
 export function registerMenu(): void {
-  (Zotero as any).MenuManager.registerMenu({
+  registeredMenuID = (Zotero as any).MenuManager.registerMenu({
+    menuID: "item-menu",
     pluginID: config.addonID,
     target: "main/library/item",
     menus: [
@@ -22,5 +25,8 @@ export function registerMenu(): void {
 }
 
 export function unregisterMenu(): void {
-  (Zotero as any).MenuManager.unregisterMenu(config.addonID);
+  if (registeredMenuID) {
+    (Zotero as any).MenuManager.unregisterMenu(registeredMenuID);
+    registeredMenuID = false;
+  }
 }

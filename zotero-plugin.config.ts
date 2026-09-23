@@ -7,8 +7,6 @@ export default defineConfig({
   name: pkg.config.addonName,
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
-  updateURL: "",
-  xpiDownloadLink: "",
 
   build: {
     assets: ["addon/**/*.*"],
