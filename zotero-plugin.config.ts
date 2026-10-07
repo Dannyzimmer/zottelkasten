@@ -32,4 +32,11 @@ export default defineConfig({
       },
     ],
   },
+
+  release: {
+    github: {
+      // Create the GitHub release locally too, not only in CI.
+      enable: "always",
+    },
+  },
 });

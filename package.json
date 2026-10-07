@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dannyzimm/zotero-zettelkasten.git"
+    "url": "git+https://github.com/Dannyzimmer/zottelkasten.git"
   },
   "scripts": {
     "start": "zotero-plugin serve",
