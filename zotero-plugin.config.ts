@@ -34,6 +34,10 @@ export default defineConfig({
   },
 
   release: {
+    bumpp: {
+      // Rebuild after bumping so the XPI matches the new version.
+      execute: "npm run build",
+    },
     github: {
       // Create the GitHub release locally too, not only in CI.
       enable: "always",
