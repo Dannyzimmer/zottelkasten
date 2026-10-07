@@ -1,6 +1,6 @@
 # Zotero Zettelkasten
 
-Plugin para **Zotero 7 o superior** (probado con Zotero 9) que genera, a partir
+Plugin para **Zotero 7 o superior** (probado con Zotero 10) que genera, a partir
 de un elemento seleccionado, una
 nota de bibliografía en Markdown lista para Obsidian/Zettelkasten. La nota
 incluye un frontmatter (título, fecha, cita completa, cita corta, tipo y tags)
@@ -14,7 +14,7 @@ La nota se puede:
 
 ## Requisitos
 
-- Zotero 7 o superior
+- Zotero 7 o superior (probado con Zotero 10)
 - Node.js 18+ y npm (solo para compilar)
 
 ## Compilar
