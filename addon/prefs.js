@@ -7,8 +7,8 @@ pref(
   `---
 title: "{{title}}"
 date: "{{date:YYYY-MM-DDTHH:mm:ssZ}}"
-citation: {{citation}}
-cite: {{cite}}
+citation: "{{citation}}"
+cite: "{{cite}}"
 type: bibliography
 tags:
 ---`,

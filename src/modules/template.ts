@@ -1,5 +1,6 @@
 import { formatNow } from "../utils/date";
 import { getPref } from "../utils/prefs";
+import { yamlQuote } from "../utils/yaml";
 import { collectAnnotations, collectChildNotes, type ItemAnnotation } from "./annotations";
 
 export interface RenderData {
@@ -11,10 +12,15 @@ export function renderNote(item: Zotero.Item, data: RenderData): string {
   const template = getPref("template") || "";
   const title = String(item.getField("title") ?? "");
 
+  // Values are emitted as YAML-quoted scalars. Both `"{{x}}"` and `{{x}}` are
+  // accepted, so existing templates with or without quotes stay valid.
   let output = template
-    .replace(/\{\{title\}\}/g, title)
-    .replace(/\{\{citation\}\}/g, data.citation)
-    .replace(/\{\{cite\}\}/g, data.cite)
+    .replace(/"\{\{title\}\}"/g, yamlQuote(title))
+    .replace(/\{\{title\}\}/g, yamlQuote(title))
+    .replace(/"\{\{citation\}\}"/g, yamlQuote(data.citation))
+    .replace(/\{\{citation\}\}/g, yamlQuote(data.citation))
+    .replace(/"\{\{cite\}\}"/g, yamlQuote(data.cite))
+    .replace(/\{\{cite\}\}/g, yamlQuote(data.cite))
     .replace(/\{\{date:([^}]+)\}\}/g, (_match, pattern: string) => formatNow(pattern));
 
   const body = renderBody(item);
