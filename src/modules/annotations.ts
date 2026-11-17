@@ -25,7 +25,7 @@ export async function collectAnnotations(item: Zotero.Item): Promise<ItemAnnotat
 
   for (const attachmentID of item.getAttachments()) {
     const attachment = Zotero.Items.get(attachmentID);
-    if (!attachment || !attachment.isPDFAttachment()) {
+    if (!attachment || !attachment.isFileAttachment()) {
       continue;
     }
 

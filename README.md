@@ -2,7 +2,7 @@
 
 A Zotero plugin that turns a selected library item into a Markdown note for
 Obsidian/Zettelkasten. The note has a YAML frontmatter and, optionally, the
-item's PDF annotations and child notes.
+item's PDF/EPUB annotations and child notes.
 
 ## Features
 
@@ -61,8 +61,8 @@ submenu:
 - **Copy bibliography note**: copies the YAML frontmatter only.
 - **Copy notes**: copies only the item's Zotero child notes (Markdown body,
   without frontmatter).
-- **Copy highlights**: copies each PDF highlight as a quote, with its annotation
-  comment below when present (Markdown body, without frontmatter).
+- **Copy highlights**: copies each PDF/EPUB highlight as a quote, with its
+  annotation comment below when present (Markdown body, without frontmatter).
 - **Create bibliography note file**: creates the `.md` file with the YAML
   frontmatter only.
 - **Update notes**: replaces the body of an existing note with the child notes.
@@ -83,7 +83,8 @@ Notes:
   action shows a notice and does nothing.
 - If the file does not start with a YAML header, the update actions abort to
   avoid data loss.
-- PDF sticky notes without highlighted text are not included in either action.
+- PDF/EPUB note annotations without highlighted text are not included in either
+  action.
 
 ## Updates
 

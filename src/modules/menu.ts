@@ -48,9 +48,34 @@ export function registerMenu(): void {
           },
           {
             menuType: "menuitem",
+            l10nID: getLocaleID("menu-create-file"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCreateFile(context),
+          },
+          {
+            menuType: "separator",
+          },
+          {
+            menuType: "menuitem",
             l10nID: getLocaleID("menu-copy-notes"),
             icon: MENU_ICON,
             onCommand: (_event: Event, context: MenuContext) => runCopyNotes(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-copy-highlights"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCopyHighlights(context),
+          },
+          {
+            menuType: "separator",
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-update-notes"),
+            icon: MENU_ICON,
+            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
+            onCommand: (_event: Event, context: MenuContext) => runUpdateNotes(context),
           },
           {
             menuType: "menuitem",
@@ -66,26 +91,6 @@ export function registerMenu(): void {
             onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
             onCommand: (_event: Event, context: MenuContext) =>
               runUpdateNotesAndHighlights(context),
-          },
-          {
-            menuType: "menuitem",
-            l10nID: getLocaleID("menu-create-file"),
-            icon: MENU_ICON,
-            onCommand: (_event: Event, context: MenuContext) => runCreateFile(context),
-          },
-          {
-            menuType: "menuitem",
-            l10nID: getLocaleID("menu-update-notes"),
-            icon: MENU_ICON,
-            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
-            onCommand: (_event: Event, context: MenuContext) => runUpdateNotes(context),
-          },
-          {
-            menuType: "menuitem",
-            l10nID: getLocaleID("menu-update-highlights"),
-            icon: MENU_ICON,
-            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
-            onCommand: (_event: Event, context: MenuContext) => runUpdateHighlights(context),
           },
         ],
       },
