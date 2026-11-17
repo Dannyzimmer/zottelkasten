@@ -1,101 +1,89 @@
 # Zotero Zettelkasten
 
-Plugin para **Zotero 7 o superior** (probado con Zotero 10) que genera, a partir
-de un elemento seleccionado, una nota de bibliografía en Markdown lista para
-Obsidian/Zettelkasten. La nota incluye un frontmatter (título, fecha, cita
-completa, cita corta, tipo y tags) y, opcionalmente, las anotaciones de los PDF
-(comentario y texto resaltado) y las notas hijas del elemento.
+A Zotero plugin that turns a selected library item into a Markdown note for
+Obsidian/Zettelkasten. The note has a YAML frontmatter and, optionally, the
+item's PDF annotations and child notes.
 
-La nota se puede:
+## Features
 
-- **Copiar al portapapeles**, o
-- **Crear como archivo `.md`** en una carpeta configurada. El nombre del archivo
-  es el contenido del campo `cite` (por ejemplo `Hinton et al., 2015.md`).
+- Copy a bibliography note to the clipboard or create a `.md` file.
+- YAML frontmatter with title, date, full citation, short citation, type and
+  tags.
+- Optional annotations: highlight comments, highlighted text and child notes.
+- Update the annotations of an existing note while keeping its YAML header.
+- APA 7th edition by default, with a configurable CSL style.
 
-## Requisitos
+## Requirements
 
-- Zotero 7 o superior (probado con Zotero 10)
-- Node.js 18+ y npm (solo para compilar)
+- Zotero 7 or later (tested with Zotero 10).
 
-## Compilar
+## Install
 
-```bash
-npm install
-npm run build
-```
+1. Open the [latest release](https://github.com/Dannyzimmer/zottelkasten/releases/latest).
+2. Download `zotero-zettelkasten.xpi`.
+3. In Zotero, go to **Tools → Plugins** (in some versions, **Edit → Settings →
+   Plugins**).
+4. Click the gear icon and choose **Install Plugin From File…**.
+5. Select the downloaded `.xpi` and restart Zotero if prompted.
 
-El build genera el plugin empaquetado en:
+You can also drag the `.xpi` file onto the Zotero window.
 
-```
-.scaffold/build/zotero-zettelkasten.xpi
-```
+## Setup
 
-## Instalar
+Open **Edit → Settings → Zettelkasten**:
 
-1. Abre Zotero.
-2. Ve a **Herramientas → Complementos** (en algunas versiones, **Editar →
-   Ajustes → Complementos**).
-3. Pulsa el engranaje (arriba a la derecha) y elige **Install Plugin From
-   File…**.
-4. Selecciona `.scaffold/build/zotero-zettelkasten.xpi`.
-5. Reinicia Zotero si el plugin lo solicita.
-
-También puedes arrastrar el archivo `.xpi` sobre la ventana de Zotero.
-
-## Configurar
-
-Abre **Editar → Ajustes → Zettelkasten**:
-
-- **Carpeta de destino**: carpeta donde se crearán los archivos `.md`. Si la
-  dejas vacía, la opción de crear archivo mostrará un aviso.
-- **Estilo de cita**: ID del estilo CSL (por defecto APA 7.ª edición,
-  `http://www.zotero.org/styles/apa`).
-- **Plantilla**: plantilla del frontmatter. Marcadores admitidos: `title`,
-  `citation`, `cite` y `date` (con formato Moment.js, p. ej.
+- **Output folder**: folder where the `.md` files are created. If empty, file
+  creation shows a warning.
+- **Citation style**: CSL style ID. Default:
+  `http://www.zotero.org/styles/apa` (APA 7th edition).
+- **Template**: frontmatter template. Supported placeholders: `title`,
+  `citation`, `cite` and `date` (Moment.js format, e.g.
   `YYYY-MM-DDTHH:mm:ssZ`).
 
-## Uso
+Default template:
 
-Selecciona un único elemento regular en la biblioteca, haz clic derecho y abre
-el submenú **Zettelkasten**:
-
-- **Copiar nota de bibliografía**: solo la cabecera YAML.
-- **Copiar nota con anotaciones**: cabecera + anotaciones de los PDF
-  (comentario y texto resaltado) y notas hijas.
-- **Crear archivo de nota de bibliografía**: solo la cabecera YAML.
-- **Crear archivo con anotaciones**: cabecera + anotaciones y notas hijas.
-- **Actualizar anotaciones**: reemplaza el cuerpo de un archivo ya creado.
-
-Si el archivo ya existe, al crearlo se muestra un aviso y no se sobrescribe.
-
-**Actualizar anotaciones** solo está activa si el archivo ya se ha creado (misma
-carpeta y nombre). Al pulsarla se pide confirmación, ya que se reemplaza todo el
-cuerpo del archivo (lo que hay después de la cabecera YAML) con las anotaciones
-y notas hijas actuales; la cabecera YAML no se toca. Si el elemento no tiene
-anotaciones ni notas hijas, no se modifica el archivo. Si el archivo no empieza
-por una cabecera YAML, se cancela para no perder datos.
-
-## Desarrollo
-
-Para arrancar Zotero con el plugin cargado desde el código fuente y recarga en
-caliente:
-
-```bash
-ZOTERO_PLUGIN_ZOTERO_BIN_PATH="/home/dannyzimm/Programas/Zotero_linux-x86_64/zotero" npm start
+```yaml
+---
+title: "{{title}}"
+date: "{{date:YYYY-MM-DDTHH:mm:ssZ}}"
+citation: "{{citation}}"
+cite: "{{cite}}"
+type: bibliography
+tags:
+---
 ```
 
-Comprobación de tipos y formato:
+## Usage
 
-```bash
-npm run check
-npm run format
-```
+Select a single regular item, right-click it and open the **Zettelkasten**
+submenu:
 
-## Publicación
+- **Copy bibliography note**: frontmatter only.
+- **Copy note with annotations**: frontmatter plus PDF annotations (highlight
+  comments and highlighted text) and child notes.
+- **Create bibliography note file**: frontmatter only.
+- **Create note file with annotations**: frontmatter plus annotations and child
+  notes.
+- **Update annotations**: replaces the body of an existing note.
 
-Si publicas el plugin en otro repositorio, actualiza el campo `repository` de
-`package.json`; el `update_url` del manifiesto se genera a partir de él.
+Notes:
 
-Zotero exige que `applications.zotero.update_url` exista y **no esté vacío**: un
-`update_url` vacío o ausente impide instalar el plugin. Por eso el valor por
-defecto apunta a las releases del repositorio indicado en `repository`.
+- The file name is the `cite` field, e.g. `Hinton et al., 2015.md`.
+- If the file already exists, the create actions show a warning and do not
+  overwrite it.
+- **Update annotations** is only enabled when the note file exists. It asks for
+  confirmation and replaces everything after the YAML header; the header itself
+  is preserved.
+- If the item has no annotations or child notes, the "with annotations" actions
+  show a notice and do nothing, and **Update annotations** leaves the file
+  untouched.
+- If the file does not start with a YAML header, **Update annotations** aborts
+  to avoid data loss.
+
+## Updates
+
+The plugin can check the GitHub releases of this repository for updates.
+
+## License
+
+MIT © 2026 Daniel Pérez Rodríguez. See [LICENSE](LICENSE).
