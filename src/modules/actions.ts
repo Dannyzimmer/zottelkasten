@@ -11,6 +11,7 @@ import {
   writeNoteBody,
   writeNoteFile,
 } from "./fileWriter";
+import { composeBody, splitBodyForUpdate } from "./manualContent";
 import { mergeItemTags } from "./tags";
 import {
   renderChildNotes,
@@ -159,23 +160,25 @@ async function updateBody(
       return;
     }
 
-    const win = Zotero.getMainWindow();
-    const confirmed = Services.prompt.confirm(
-      win as any,
-      config.addonName,
-      getString("confirm-update"),
-    );
-    if (!confirmed) {
-      return;
-    }
-
     const parts = splitFrontmatter(await readNote(path));
     if (!parts) {
       alert(getString("error-no-frontmatter"));
       return;
     }
 
-    await writeNoteBody(path, mergeItemTags(parts.frontmatter, item), body);
+    const sections = splitBodyForUpdate(parts.body);
+
+    const win = Zotero.getMainWindow();
+    const confirmed = Services.prompt.confirm(
+      win as any,
+      config.addonName,
+      getString(sections.hasEndMarker ? "confirm-update-marker" : "confirm-update"),
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    await writeNoteBody(path, mergeItemTags(parts.frontmatter, item), composeBody(body, sections));
     notify(getString("file-updated", { path }));
   } catch (error) {
     alert(getString("error-generic", { error: String(error) }));

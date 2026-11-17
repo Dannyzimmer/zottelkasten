@@ -8,6 +8,7 @@ no-notes = No hay notas hijas que incluir.
 no-highlights = No hay subrayados que incluir.
 no-content = No hay notas ni subrayados que incluir.
 confirm-update = Se sobrescribirá el cuerpo del archivo y podrías perder el contenido que hayas añadido. ¿Quieres continuar?
+confirm-update-marker = Se actualizará el contenido automático. El contenido que hay por debajo del marcador manual se conservará. ¿Quieres continuar?
 error-no-output-dir = Configura primero una carpeta de destino en los ajustes del plugin.
 error-file-exists = El archivo ya existe y no se sobrescribirá: { $path }
 error-file-not-created = El archivo de la nota aún no se ha creado.

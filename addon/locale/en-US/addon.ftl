@@ -8,6 +8,7 @@ no-notes = There are no child notes to include.
 no-highlights = There are no highlights to include.
 no-content = There are no notes or highlights to include.
 confirm-update = The file body will be overwritten and any content you added there may be lost. Do you want to continue?
+confirm-update-marker = The automatic content will be updated. Content below the manual marker will be preserved. Do you want to continue?
 error-no-output-dir = Configure an output folder in the plugin settings first.
 error-file-exists = The file already exists and will not be overwritten: { $path }
 error-file-not-created = The note file has not been created yet.

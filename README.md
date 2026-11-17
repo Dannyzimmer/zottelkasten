@@ -91,7 +91,8 @@ Notes:
   and does not overwrite it.
 - **Update notes**, **Update highlights** and **Update notes and highlights**
   are only enabled when the note file exists. All ask for confirmation and
-  replace everything after the YAML header; the header itself is preserved.
+  replace the automatic content after the YAML header; the header itself is
+  preserved. Content below a manual marker is kept (see below).
 - If there are no child notes or highlights, the corresponding copy/update
   action shows a notice and does nothing.
 - If the file does not start with a YAML header, the update actions abort to
@@ -105,6 +106,36 @@ Notes:
   before the first entry, are copied without a chapter heading.
 - With the tag option enabled, manual Zotero tags are merged into the YAML
   `tags` entry; existing tags are preserved and duplicates are not added.
+
+## Manual content below a marker
+
+To keep your own notes safe from automatic updates, add this comment on its own
+line in the note:
+
+```markdown
+<!-- zettelkasten:manual-below -->
+```
+
+Everything below it is preserved by the update actions; the plugin regenerates
+only the content above the marker.
+
+If you also want to keep manual content above the automatic section, add:
+
+```markdown
+<!-- zettelkasten:auto-start -->
+```
+
+above it. The plugin will then replace only the content between the two
+markers.
+
+Notes:
+
+- Markers must be on their own line. Markers inside fenced code blocks are
+  ignored.
+- Without the end marker, the update actions replace the whole note body; the
+  confirmation dialog warns about it.
+- Markers are not inserted automatically; paste them where you want the
+  boundary.
 
 ## Updates
 

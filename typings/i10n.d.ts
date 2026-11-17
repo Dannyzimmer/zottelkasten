@@ -5,6 +5,7 @@
 export type FluentMessageId =
   | 'annotations-heading'
   | 'confirm-update'
+  | 'confirm-update-marker'
   | 'copied'
   | 'copied-highlights'
   | 'copied-notes'
