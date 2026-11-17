@@ -5,15 +5,28 @@ import {
   type MenuShowingContext,
   hasNoteFile,
   runCopy,
-  runCopyWithAnnotations,
+  runCopyHighlights,
+  runCopyNotes,
   runCreateFile,
-  runCreateFileWithAnnotations,
-  runUpdateAnnotations,
+  runUpdateHighlights,
+  runUpdateNotes,
 } from "./actions";
 
 const MENU_ICON = rootURI + "content/icons/menu-16.png";
 
 let registeredMenuID: string | false = false;
+
+function enableIfNoteExists(context: MenuShowingContext): void {
+  const items = context.items ?? [];
+  const item = items.length === 1 && items[0].isRegularItem() ? items[0] : null;
+  if (!item) {
+    context.setEnabled(false);
+    return;
+  }
+  hasNoteFile(item)
+    .then((exists) => context.setEnabled(!!exists))
+    .catch(() => context.setEnabled(false));
+}
 
 export function registerMenu(): void {
   registeredMenuID = (Zotero as any).MenuManager.registerMenu({
@@ -34,9 +47,15 @@ export function registerMenu(): void {
           },
           {
             menuType: "menuitem",
-            l10nID: getLocaleID("menu-copy-with-annotations"),
+            l10nID: getLocaleID("menu-copy-notes"),
             icon: MENU_ICON,
-            onCommand: (_event: Event, context: MenuContext) => runCopyWithAnnotations(context),
+            onCommand: (_event: Event, context: MenuContext) => runCopyNotes(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-copy-highlights"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCopyHighlights(context),
           },
           {
             menuType: "menuitem",
@@ -46,27 +65,17 @@ export function registerMenu(): void {
           },
           {
             menuType: "menuitem",
-            l10nID: getLocaleID("menu-create-file-with-annotations"),
+            l10nID: getLocaleID("menu-update-notes"),
             icon: MENU_ICON,
-            onCommand: (_event: Event, context: MenuContext) =>
-              runCreateFileWithAnnotations(context),
+            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
+            onCommand: (_event: Event, context: MenuContext) => runUpdateNotes(context),
           },
           {
             menuType: "menuitem",
-            l10nID: getLocaleID("menu-update"),
+            l10nID: getLocaleID("menu-update-highlights"),
             icon: MENU_ICON,
-            onShowing: (_event: Event, context: MenuShowingContext) => {
-              const items = context.items ?? [];
-              const item = items.length === 1 && items[0].isRegularItem() ? items[0] : null;
-              if (!item) {
-                context.setEnabled(false);
-                return;
-              }
-              hasNoteFile(item)
-                .then((exists) => context.setEnabled(!!exists))
-                .catch(() => context.setEnabled(false));
-            },
-            onCommand: (_event: Event, context: MenuContext) => runUpdateAnnotations(context),
+            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
+            onCommand: (_event: Event, context: MenuContext) => runUpdateHighlights(context),
           },
         ],
       },

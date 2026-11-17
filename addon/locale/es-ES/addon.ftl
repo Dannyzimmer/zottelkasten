@@ -1,10 +1,12 @@
 no-item-selected = Selecciona exactamente un elemento bibliográfico.
 copied = Nota de bibliografía copiada al portapapeles.
-copied-with-annotations = Nota con anotaciones copiada al portapapeles.
+copied-notes = Notas copiadas al portapapeles.
+copied-highlights = Subrayados copiados al portapapeles.
 file-created = Archivo creado: { $path }
-file-updated = Anotaciones actualizadas: { $path }
-no-annotations = No hay anotaciones ni notas hijas que escribir.
-confirm-update = Se sobrescribirá el contenido de notas del archivo y podrías perder las anotaciones que hayas añadido. ¿Quieres continuar?
+file-updated = Archivo actualizado: { $path }
+no-notes = No hay notas hijas que copiar.
+no-highlights = No hay subrayados que copiar.
+confirm-update = Se sobrescribirá el cuerpo del archivo y podrías perder el contenido que hayas añadido. ¿Quieres continuar?
 error-no-output-dir = Configura primero una carpeta de destino en los ajustes del plugin.
 error-file-exists = El archivo ya existe y no se sobrescribirá: { $path }
 error-file-not-created = El archivo de la nota aún no se ha creado.

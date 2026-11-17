@@ -1,7 +1,7 @@
 import { formatNow } from "../utils/date";
 import { getPref } from "../utils/prefs";
 import { yamlQuote } from "../utils/yaml";
-import { collectAnnotations, collectChildNotes, type ItemAnnotation } from "./annotations";
+import { collectAnnotations, collectChildNotes } from "./annotations";
 
 export interface RenderData {
   citation: string;
@@ -32,31 +32,29 @@ export function renderNote(item: Zotero.Item, data: RenderData, body = ""): stri
 }
 
 /**
- * Build the note body from the item's PDF annotations and child notes.
- * Always re-collected, so it can be reused to refresh an existing file.
+ * Body with only the item's Zotero child notes.
  */
-export function renderBody(item: Zotero.Item): string {
-  const blocks: string[] = [];
-  blocks.push(...buildAnnotationBlocks(collectAnnotations(item)));
-  blocks.push(...collectChildNotes(item));
-  return blocks.join("\n\n\n");
+export function renderChildNotes(item: Zotero.Item): string {
+  return collectChildNotes(item).join("\n\n\n");
 }
 
-function buildAnnotationBlocks(annotations: ItemAnnotation[]): string[] {
+/**
+ * Body with the item's PDF highlights. Each highlighted text is written as a
+ * quote and, below it, the annotation comment when present.
+ */
+export function renderHighlights(item: Zotero.Item): string {
   const blocks: string[] = [];
 
-  for (const annotation of annotations) {
-    const parts: string[] = [];
+  for (const annotation of collectAnnotations(item)) {
+    if (!annotation.text) {
+      continue;
+    }
+    const parts = [`> ${annotation.text.replace(/\r?\n/g, "\n> ")}`];
     if (annotation.comment) {
       parts.push(annotation.comment);
     }
-    if (annotation.text) {
-      parts.push(`> ${annotation.text.replace(/\r?\n/g, "\n> ")}`);
-    }
-    if (parts.length) {
-      blocks.push(parts.join("\n\n"));
-    }
+    blocks.push(parts.join("\n\n"));
   }
 
-  return blocks;
+  return blocks.join("\n\n\n");
 }

@@ -11,7 +11,7 @@ import {
   writeNoteBody,
   writeNoteFile,
 } from "./fileWriter";
-import { renderBody, renderNote } from "./template";
+import { renderChildNotes, renderHighlights, renderNote } from "./template";
 
 export interface MenuContext {
   items: Zotero.Item[];
@@ -24,7 +24,6 @@ export interface MenuShowingContext extends MenuContext {
 interface BuiltNote {
   content: string;
   cite: string;
-  body: string;
 }
 
 function getTargetItem(context: MenuContext): Zotero.Item | null {
@@ -35,25 +34,15 @@ function getTargetItem(context: MenuContext): Zotero.Item | null {
   return items[0];
 }
 
-function buildNote(item: Zotero.Item, includeAnnotations: boolean): BuiltNote {
+function buildNote(item: Zotero.Item): BuiltNote {
   const { citation, cite } = generateCitation(item);
-  const body = includeAnnotations ? renderBody(item) : "";
   return {
-    content: renderNote(item, { citation, cite }, body),
+    content: renderNote(item, { citation, cite }),
     cite,
-    body,
   };
 }
 
 export async function runCopy(context: MenuContext): Promise<void> {
-  await copyNote(context, false);
-}
-
-export async function runCopyWithAnnotations(context: MenuContext): Promise<void> {
-  await copyNote(context, true);
-}
-
-async function copyNote(context: MenuContext, includeAnnotations: boolean): Promise<void> {
   const item = getTargetItem(context);
   if (!item) {
     alert(getString("no-item-selected"));
@@ -61,27 +50,15 @@ async function copyNote(context: MenuContext, includeAnnotations: boolean): Prom
   }
 
   try {
-    const note = buildNote(item, includeAnnotations);
-    if (includeAnnotations && !note.body.trim()) {
-      notify(getString("no-annotations"));
-      return;
-    }
+    const note = buildNote(item);
     copyToClipboard(note.content);
-    notify(getString(includeAnnotations ? "copied-with-annotations" : "copied"));
+    notify(getString("copied"));
   } catch (error) {
     alert(getString("error-generic", { error: String(error) }));
   }
 }
 
 export async function runCreateFile(context: MenuContext): Promise<void> {
-  await createNoteFile(context, false);
-}
-
-export async function runCreateFileWithAnnotations(context: MenuContext): Promise<void> {
-  await createNoteFile(context, true);
-}
-
-async function createNoteFile(context: MenuContext, includeAnnotations: boolean): Promise<void> {
   const item = getTargetItem(context);
   if (!item) {
     alert(getString("no-item-selected"));
@@ -89,11 +66,7 @@ async function createNoteFile(context: MenuContext, includeAnnotations: boolean)
   }
 
   try {
-    const note = buildNote(item, includeAnnotations);
-    if (includeAnnotations && !note.body.trim()) {
-      notify(getString("no-annotations"));
-      return;
-    }
+    const note = buildNote(item);
     const path = await writeNoteFile(note.cite, note.content);
     notify(getString("file-created", { path }));
   } catch (error) {
@@ -111,7 +84,52 @@ async function createNoteFile(context: MenuContext, includeAnnotations: boolean)
   }
 }
 
-export async function runUpdateAnnotations(context: MenuContext): Promise<void> {
+export async function runCopyNotes(context: MenuContext): Promise<void> {
+  await copyBody(context, renderChildNotes, "no-notes", "copied-notes");
+}
+
+export async function runCopyHighlights(context: MenuContext): Promise<void> {
+  await copyBody(context, renderHighlights, "no-highlights", "copied-highlights");
+}
+
+export async function runUpdateNotes(context: MenuContext): Promise<void> {
+  await updateBody(context, renderChildNotes, "no-notes");
+}
+
+export async function runUpdateHighlights(context: MenuContext): Promise<void> {
+  await updateBody(context, renderHighlights, "no-highlights");
+}
+
+async function copyBody(
+  context: MenuContext,
+  getBody: (item: Zotero.Item) => string,
+  emptyKey: string,
+  copiedKey: string,
+): Promise<void> {
+  const item = getTargetItem(context);
+  if (!item) {
+    alert(getString("no-item-selected"));
+    return;
+  }
+
+  try {
+    const body = getBody(item);
+    if (!body.trim()) {
+      notify(getString(emptyKey));
+      return;
+    }
+    copyToClipboard(body);
+    notify(getString(copiedKey));
+  } catch (error) {
+    alert(getString("error-generic", { error: String(error) }));
+  }
+}
+
+async function updateBody(
+  context: MenuContext,
+  getBody: (item: Zotero.Item) => string,
+  emptyKey: string,
+): Promise<void> {
   const item = getTargetItem(context);
   if (!item) {
     alert(getString("no-item-selected"));
@@ -125,9 +143,9 @@ export async function runUpdateAnnotations(context: MenuContext): Promise<void> 
       return;
     }
 
-    const body = renderBody(item);
+    const body = getBody(item);
     if (!body.trim()) {
-      notify(getString("no-annotations"));
+      notify(getString(emptyKey));
       return;
     }
 

@@ -58,27 +58,30 @@ tags:
 Select a single regular item, right-click it and open the **Zettelkasten**
 submenu:
 
-- **Copy bibliography note**: frontmatter only.
-- **Copy note with annotations**: frontmatter plus PDF annotations (highlight
-  comments and highlighted text) and child notes.
-- **Create bibliography note file**: frontmatter only.
-- **Create note file with annotations**: frontmatter plus annotations and child
-  notes.
-- **Update annotations**: replaces the body of an existing note.
+- **Copy bibliography note**: copies the YAML frontmatter only.
+- **Copy notes**: copies only the item's Zotero child notes (Markdown body,
+  without frontmatter).
+- **Copy highlights**: copies each PDF highlight as a quote, with its annotation
+  comment below when present (Markdown body, without frontmatter).
+- **Create bibliography note file**: creates the `.md` file with the YAML
+  frontmatter only.
+- **Update notes**: replaces the body of an existing note with the child notes.
+- **Update highlights**: replaces the body of an existing note with the
+  highlights and their annotation comments.
 
 Notes:
 
 - The file name is the `cite` field, e.g. `Hinton et al., 2015.md`.
-- If the file already exists, the create actions show a warning and do not
-  overwrite it.
-- **Update annotations** is only enabled when the note file exists. It asks for
-  confirmation and replaces everything after the YAML header; the header itself
-  is preserved.
-- If the item has no annotations or child notes, the "with annotations" actions
-  show a notice and do nothing, and **Update annotations** leaves the file
-  untouched.
-- If the file does not start with a YAML header, **Update annotations** aborts
-  to avoid data loss.
+- If the file already exists, **Create bibliography note file** shows a warning
+  and does not overwrite it.
+- **Update notes** and **Update highlights** are only enabled when the note file
+  exists. Both ask for confirmation and replace everything after the YAML
+  header; the header itself is preserved.
+- If there are no child notes or highlights, the corresponding copy/update
+  action shows a notice and does nothing.
+- If the file does not start with a YAML header, the update actions abort to
+  avoid data loss.
+- PDF sticky notes without highlighted text are not included in either action.
 
 ## Updates
 

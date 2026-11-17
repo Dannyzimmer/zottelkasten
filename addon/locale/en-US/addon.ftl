@@ -1,10 +1,12 @@
 no-item-selected = Select exactly one bibliographic item.
 copied = Bibliography note copied to clipboard.
-copied-with-annotations = Note with annotations copied to clipboard.
+copied-notes = Notes copied to clipboard.
+copied-highlights = Highlights copied to clipboard.
 file-created = File created: { $path }
-file-updated = Annotations updated: { $path }
-no-annotations = There are no annotations or child notes to write.
-confirm-update = The notes content of the file will be overwritten and any annotations you added there may be lost. Do you want to continue?
+file-updated = File updated: { $path }
+no-notes = There are no child notes to copy.
+no-highlights = There are no highlights to copy.
+confirm-update = The file body will be overwritten and any content you added there may be lost. Do you want to continue?
 error-no-output-dir = Configure an output folder in the plugin settings first.
 error-file-exists = The file already exists and will not be overwritten: { $path }
 error-file-not-created = The note file has not been created yet.
