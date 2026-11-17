@@ -85,7 +85,8 @@ function formatTag(tag: string): string {
 export function getManualTags(item: Zotero.Item): string[] {
   const tags: string[] = [];
   for (const tag of item.getTags()) {
-    if (tag.type !== 0) {
+    // Zotero omits `type` for manual tags; only automatic tags have type 1.
+    if (tag.type === 1) {
       continue;
     }
     const value = normalizeTag(tag.tag);
