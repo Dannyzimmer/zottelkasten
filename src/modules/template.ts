@@ -1,4 +1,5 @@
 import { formatNow } from "../utils/date";
+import { getNoteString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
 import { yamlQuote } from "../utils/yaml";
 import { type ItemAnnotation, collectAnnotations, collectChildNotes } from "./annotations";
@@ -36,7 +37,11 @@ export function renderNote(item: Zotero.Item, data: RenderData, body = ""): stri
  * Body with only the item's Zotero child notes.
  */
 export async function renderChildNotes(item: Zotero.Item): Promise<string> {
-  return (await collectChildNotes(item)).join("\n\n\n");
+  const notes = await collectChildNotes(item);
+  if (!notes.length) {
+    return "";
+  }
+  return `# ${getNoteString("notes-heading")}\n\n${notes.join("\n\n\n")}`;
 }
 
 /**
@@ -81,7 +86,10 @@ export async function renderHighlights(item: Zotero.Item): Promise<string> {
     }
   }
 
-  return sections.join("\n\n\n");
+  if (!sections.length) {
+    return "";
+  }
+  return `# ${getNoteString("annotations-heading")}\n\n${sections.join("\n\n\n")}`;
 }
 
 function formatHighlight(annotation: ItemAnnotation): string {

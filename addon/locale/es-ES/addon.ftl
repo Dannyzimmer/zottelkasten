@@ -13,3 +13,5 @@ error-file-exists = El archivo ya existe y no se sobrescribirá: { $path }
 error-file-not-created = El archivo de la nota aún no se ha creado.
 error-no-frontmatter = El archivo no empieza por una cabecera YAML; se cancela la actualización para no perder datos.
 error-generic = No se pudo generar la nota: { $error }
+notes-heading = Notas
+annotations-heading = Anotaciones

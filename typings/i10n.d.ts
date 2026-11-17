@@ -3,6 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 export type FluentMessageId =
+  | 'annotations-heading'
   | 'confirm-update'
   | 'copied'
   | 'copied-highlights'
@@ -26,7 +27,13 @@ export type FluentMessageId =
   | 'no-highlights'
   | 'no-item-selected'
   | 'no-notes'
+  | 'notes-heading'
   | 'prefs-choose-folder'
+  | 'prefs-note-language-auto'
+  | 'prefs-note-language-en'
+  | 'prefs-note-language-es'
+  | 'prefs-note-language-help'
+  | 'prefs-note-language-label'
   | 'prefs-output-dir-help'
   | 'prefs-output-dir-label'
   | 'prefs-style-help'

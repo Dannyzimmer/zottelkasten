@@ -9,6 +9,7 @@ declare namespace _ZoteroTypes {
     PluginPrefsMap: {
       "outputDir": string;
       "styleID": string;
+      "noteLanguage": string;
       "template": string;
     };
   }

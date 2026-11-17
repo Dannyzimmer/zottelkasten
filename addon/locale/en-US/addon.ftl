@@ -13,3 +13,5 @@ error-file-exists = The file already exists and will not be overwritten: { $path
 error-file-not-created = The note file has not been created yet.
 error-no-frontmatter = The file does not start with a YAML header; the update was aborted to avoid data loss.
 error-generic = The note could not be generated: { $error }
+notes-heading = Notes
+annotations-heading = Annotations
