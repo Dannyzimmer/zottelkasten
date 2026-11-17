@@ -15,3 +15,6 @@ prefs-note-language-en =
     .label = English
 prefs-note-language-es =
     .label = Español
+prefs-add-tags =
+    .label = Añadir los tags manuales del elemento al encabezado YAML
+prefs-add-tags-help = Se conservan los tags existentes; solo se añaden los nuevos, sin duplicados.

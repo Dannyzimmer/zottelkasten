@@ -11,6 +11,7 @@ import {
   writeNoteBody,
   writeNoteFile,
 } from "./fileWriter";
+import { mergeItemTags } from "./tags";
 import {
   renderChildNotes,
   renderHighlights,
@@ -174,7 +175,7 @@ async function updateBody(
       return;
     }
 
-    await writeNoteBody(path, parts.frontmatter, body);
+    await writeNoteBody(path, mergeItemTags(parts.frontmatter, item), body);
     notify(getString("file-updated", { path }));
   } catch (error) {
     alert(getString("error-generic", { error: String(error) }));

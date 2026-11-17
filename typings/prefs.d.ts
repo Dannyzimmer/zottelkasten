@@ -10,6 +10,7 @@ declare namespace _ZoteroTypes {
       "outputDir": string;
       "styleID": string;
       "noteLanguage": string;
+      "addTags": boolean;
       "template": string;
     };
   }

@@ -15,3 +15,6 @@ prefs-note-language-en =
     .label = English
 prefs-note-language-es =
     .label = Español
+prefs-add-tags =
+    .label = Add manual item tags to the YAML header
+prefs-add-tags-help = Existing tags are kept; only new tags are added, without duplicates.

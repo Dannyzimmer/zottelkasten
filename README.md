@@ -15,6 +15,8 @@ item's PDF/EPUB annotations and child notes.
   has an outline/table of contents.
 - Interface and generated headings in English and Spanish, with a configurable
   note language.
+- Optional merging of the item's manual Zotero tags into the YAML `tags` entry,
+  without duplicates.
 - Update the annotations of an existing note while keeping its YAML header.
 - APA 7th edition by default, with a configurable CSL style.
 
@@ -43,6 +45,10 @@ Open **Edit → Settings → Zettelkasten**:
   `http://www.zotero.org/styles/apa` (APA 7th edition).
 - **Note language**: language of the generated `# Notes` / `# Annotations`
   headings. Options: Automatic (follow Zotero), English, Español.
+- **Add manual item tags to the YAML header**: merges the item's manual Zotero
+  tags into the `tags` entry. Existing tags are kept and only new tags are
+  added, without duplicates. Applies when creating/copying and when updating a
+  note.
 - **Template**: frontmatter template. Supported placeholders: `title`,
   `citation`, `cite` and `date` (Moment.js format, e.g.
   `YYYY-MM-DDTHH:mm:ssZ`).
@@ -97,6 +103,8 @@ Notes:
 - When the document has an outline/table of contents, highlights are grouped
   under `## Chapter` headings. Documents without an outline/TOC, or highlights
   before the first entry, are copied without a chapter heading.
+- With the tag option enabled, manual Zotero tags are merged into the YAML
+  `tags` entry; existing tags are preserved and duplicates are not added.
 
 ## Updates
 

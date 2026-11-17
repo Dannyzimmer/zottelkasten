@@ -91,6 +91,6 @@ export async function writeNoteBody(
   body: string,
 ): Promise<void> {
   const trimmed = body.trim();
-  const content = trimmed ? `${frontmatter}\n\n\n${trimmed}` : frontmatter;
+  const content = trimmed ? `${frontmatter}\n\n${trimmed}` : frontmatter;
   await IOUtils.writeUTF8(path, content);
 }

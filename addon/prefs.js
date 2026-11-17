@@ -1,6 +1,7 @@
 pref("outputDir", "");
 pref("styleID", "http://www.zotero.org/styles/apa");
 pref("noteLanguage", "auto");
+pref("addTags", false);
 pref(
   "template",
   `---

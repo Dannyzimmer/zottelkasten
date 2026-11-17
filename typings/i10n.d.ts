@@ -28,6 +28,8 @@ export type FluentMessageId =
   | 'no-item-selected'
   | 'no-notes'
   | 'notes-heading'
+  | 'prefs-add-tags'
+  | 'prefs-add-tags-help'
   | 'prefs-choose-folder'
   | 'prefs-note-language-auto'
   | 'prefs-note-language-en'

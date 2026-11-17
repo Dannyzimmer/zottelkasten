@@ -4,6 +4,7 @@ import { getPref } from "../utils/prefs";
 import { yamlQuote } from "../utils/yaml";
 import { type ItemAnnotation, collectAnnotations, collectChildNotes } from "./annotations";
 import { resolveChapter } from "./chapters";
+import { mergeItemTags } from "./tags";
 
 export interface RenderData {
   citation: string;
@@ -25,9 +26,11 @@ export function renderNote(item: Zotero.Item, data: RenderData, body = ""): stri
     .replace(/\{\{cite\}\}/g, yamlQuote(data.cite))
     .replace(/\{\{date:([^}]+)\}\}/g, (_match, pattern: string) => formatNow(pattern));
 
+  output = mergeItemTags(output, item);
+
   const trimmedBody = body.trim();
   if (trimmedBody) {
-    output = `${output.replace(/\s*$/, "")}\n\n\n${trimmedBody}`;
+    output = `${output.replace(/\s*$/, "")}\n\n${trimmedBody}`;
   }
 
   return output;
@@ -41,7 +44,7 @@ export async function renderChildNotes(item: Zotero.Item): Promise<string> {
   if (!notes.length) {
     return "";
   }
-  return `# ${getNoteString("notes-heading")}\n\n${notes.join("\n\n\n")}`;
+  return `# ${getNoteString("notes-heading")}\n\n${notes.join("\n\n")}`;
 }
 
 /**
@@ -77,19 +80,19 @@ export async function renderHighlights(item: Zotero.Item): Promise<string> {
 
   const sections: string[] = [];
   if (noChapter.length) {
-    sections.push(noChapter.join("\n\n\n"));
+    sections.push(noChapter.join("\n\n"));
   }
   for (const key of order) {
     const group = groups.get(key);
     if (group) {
-      sections.push(`## ${group.title}\n\n${group.blocks.join("\n\n\n")}`);
+      sections.push(`## ${group.title}\n\n${group.blocks.join("\n\n")}`);
     }
   }
 
   if (!sections.length) {
     return "";
   }
-  return `# ${getNoteString("annotations-heading")}\n\n${sections.join("\n\n\n")}`;
+  return `# ${getNoteString("annotations-heading")}\n\n${sections.join("\n\n")}`;
 }
 
 function formatHighlight(annotation: ItemAnnotation): string {
@@ -113,5 +116,5 @@ export async function renderNotesAndHighlights(item: Zotero.Item): Promise<strin
   if (highlights.trim()) {
     parts.push(highlights);
   }
-  return parts.join("\n\n\n");
+  return parts.join("\n\n");
 }
