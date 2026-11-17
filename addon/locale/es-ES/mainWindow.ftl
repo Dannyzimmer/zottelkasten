@@ -12,3 +12,5 @@ menu-update-notes =
     .label = Actualizar notas
 menu-update-highlights =
     .label = Actualizar subrayados
+menu-update-notes-highlights =
+    .label = Actualizar notas y subrayados

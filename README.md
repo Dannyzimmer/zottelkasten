@@ -68,15 +68,17 @@ submenu:
 - **Update notes**: replaces the body of an existing note with the child notes.
 - **Update highlights**: replaces the body of an existing note with the
   highlights and their annotation comments.
+- **Update notes and highlights**: replaces the body with the child notes
+  followed by the highlights and their annotation comments.
 
 Notes:
 
 - The file name is the `cite` field, e.g. `Hinton et al., 2015.md`.
 - If the file already exists, **Create bibliography note file** shows a warning
   and does not overwrite it.
-- **Update notes** and **Update highlights** are only enabled when the note file
-  exists. Both ask for confirmation and replace everything after the YAML
-  header; the header itself is preserved.
+- **Update notes**, **Update highlights** and **Update notes and highlights**
+  are only enabled when the note file exists. All ask for confirmation and
+  replace everything after the YAML header; the header itself is preserved.
 - If there are no child notes or highlights, the corresponding copy/update
   action shows a notice and does nothing.
 - If the file does not start with a YAML header, the update actions abort to

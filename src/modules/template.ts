@@ -34,18 +34,18 @@ export function renderNote(item: Zotero.Item, data: RenderData, body = ""): stri
 /**
  * Body with only the item's Zotero child notes.
  */
-export function renderChildNotes(item: Zotero.Item): string {
-  return collectChildNotes(item).join("\n\n\n");
+export async function renderChildNotes(item: Zotero.Item): Promise<string> {
+  return (await collectChildNotes(item)).join("\n\n\n");
 }
 
 /**
  * Body with the item's PDF highlights. Each highlighted text is written as a
  * quote and, below it, the annotation comment when present.
  */
-export function renderHighlights(item: Zotero.Item): string {
+export async function renderHighlights(item: Zotero.Item): Promise<string> {
   const blocks: string[] = [];
 
-  for (const annotation of collectAnnotations(item)) {
+  for (const annotation of await collectAnnotations(item)) {
     if (!annotation.text) {
       continue;
     }
@@ -57,4 +57,20 @@ export function renderHighlights(item: Zotero.Item): string {
   }
 
   return blocks.join("\n\n\n");
+}
+
+/**
+ * Body combining child notes and highlights, child notes first.
+ */
+export async function renderNotesAndHighlights(item: Zotero.Item): Promise<string> {
+  const parts: string[] = [];
+  const notes = await renderChildNotes(item);
+  if (notes.trim()) {
+    parts.push(notes);
+  }
+  const highlights = await renderHighlights(item);
+  if (highlights.trim()) {
+    parts.push(highlights);
+  }
+  return parts.join("\n\n\n");
 }

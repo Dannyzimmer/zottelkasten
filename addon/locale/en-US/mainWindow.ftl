@@ -12,3 +12,5 @@ menu-update-notes =
     .label = Update notes
 menu-update-highlights =
     .label = Update highlights
+menu-update-notes-highlights =
+    .label = Update notes and highlights

@@ -5,14 +5,31 @@ export interface ItemAnnotation {
   text: string;
 }
 
-export function collectAnnotations(item: Zotero.Item): ItemAnnotation[] {
+/**
+ * Make sure `childItems` data (attachments, notes and annotations) is loaded
+ * for an item. Library items don't always have it loaded, and without it
+ * `getAttachments()`, `getNotes()` and `getAnnotations()` return nothing.
+ */
+async function ensureChildItems(item: Zotero.Item): Promise<void> {
+  try {
+    await (item as any).loadDataType("childItems");
+  } catch (error) {
+    Zotero.debug(`Zotero Zettelkasten: could not load child items for ${item.id}: ${error}`);
+  }
+}
+
+export async function collectAnnotations(item: Zotero.Item): Promise<ItemAnnotation[]> {
   const result: ItemAnnotation[] = [];
+
+  await ensureChildItems(item);
 
   for (const attachmentID of item.getAttachments()) {
     const attachment = Zotero.Items.get(attachmentID);
     if (!attachment || !attachment.isPDFAttachment()) {
       continue;
     }
+
+    await ensureChildItems(attachment);
 
     const annotations = attachment
       .getAnnotations()
@@ -34,8 +51,10 @@ export function collectAnnotations(item: Zotero.Item): ItemAnnotation[] {
   return result;
 }
 
-export function collectChildNotes(item: Zotero.Item): string[] {
+export async function collectChildNotes(item: Zotero.Item): Promise<string[]> {
   const notes: string[] = [];
+
+  await ensureChildItems(item);
 
   for (const noteID of item.getNotes()) {
     const note = Zotero.Items.get(noteID);

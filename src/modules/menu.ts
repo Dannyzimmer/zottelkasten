@@ -10,6 +10,7 @@ import {
   runCreateFile,
   runUpdateHighlights,
   runUpdateNotes,
+  runUpdateNotesAndHighlights,
 } from "./actions";
 
 const MENU_ICON = rootURI + "content/icons/menu-16.png";
@@ -53,9 +54,18 @@ export function registerMenu(): void {
           },
           {
             menuType: "menuitem",
-            l10nID: getLocaleID("menu-copy-highlights"),
+            l10nID: getLocaleID("menu-update-highlights"),
             icon: MENU_ICON,
-            onCommand: (_event: Event, context: MenuContext) => runCopyHighlights(context),
+            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
+            onCommand: (_event: Event, context: MenuContext) => runUpdateHighlights(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-update-notes-highlights"),
+            icon: MENU_ICON,
+            onShowing: (_event: Event, context: MenuShowingContext) => enableIfNoteExists(context),
+            onCommand: (_event: Event, context: MenuContext) =>
+              runUpdateNotesAndHighlights(context),
           },
           {
             menuType: "menuitem",

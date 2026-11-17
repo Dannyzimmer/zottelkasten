@@ -11,7 +11,12 @@ import {
   writeNoteBody,
   writeNoteFile,
 } from "./fileWriter";
-import { renderChildNotes, renderHighlights, renderNote } from "./template";
+import {
+  renderChildNotes,
+  renderHighlights,
+  renderNote,
+  renderNotesAndHighlights,
+} from "./template";
 
 export interface MenuContext {
   items: Zotero.Item[];
@@ -100,9 +105,13 @@ export async function runUpdateHighlights(context: MenuContext): Promise<void> {
   await updateBody(context, renderHighlights, "no-highlights");
 }
 
+export async function runUpdateNotesAndHighlights(context: MenuContext): Promise<void> {
+  await updateBody(context, renderNotesAndHighlights, "no-content");
+}
+
 async function copyBody(
   context: MenuContext,
-  getBody: (item: Zotero.Item) => string,
+  getBody: (item: Zotero.Item) => Promise<string>,
   emptyKey: string,
   copiedKey: string,
 ): Promise<void> {
@@ -113,7 +122,7 @@ async function copyBody(
   }
 
   try {
-    const body = getBody(item);
+    const body = await getBody(item);
     if (!body.trim()) {
       notify(getString(emptyKey));
       return;
@@ -127,7 +136,7 @@ async function copyBody(
 
 async function updateBody(
   context: MenuContext,
-  getBody: (item: Zotero.Item) => string,
+  getBody: (item: Zotero.Item) => Promise<string>,
   emptyKey: string,
 ): Promise<void> {
   const item = getTargetItem(context);
@@ -143,7 +152,7 @@ async function updateBody(
       return;
     }
 
-    const body = getBody(item);
+    const body = await getBody(item);
     if (!body.trim()) {
       notify(getString(emptyKey));
       return;

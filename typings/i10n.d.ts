@@ -21,6 +21,8 @@ export type FluentMessageId =
   | 'menu-root'
   | 'menu-update-highlights'
   | 'menu-update-notes'
+  | 'menu-update-notes-highlights'
+  | 'no-content'
   | 'no-highlights'
   | 'no-item-selected'
   | 'no-notes'
