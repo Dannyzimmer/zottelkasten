@@ -1,10 +1,10 @@
 # Zotero Zettelkasten
 
 Plugin para **Zotero 7 o superior** (probado con Zotero 10) que genera, a partir
-de un elemento seleccionado, una
-nota de bibliografía en Markdown lista para Obsidian/Zettelkasten. La nota
-incluye un frontmatter (título, fecha, cita completa, cita corta, tipo y tags)
-y, si el elemento tiene anotaciones en PDF, el comentario y el texto resaltado.
+de un elemento seleccionado, una nota de bibliografía en Markdown lista para
+Obsidian/Zettelkasten. La nota incluye un frontmatter (título, fecha, cita
+completa, cita corta, tipo y tags) y, opcionalmente, las anotaciones de los PDF
+(comentario y texto resaltado) y las notas hijas del elemento.
 
 La nota se puede:
 
@@ -53,19 +53,18 @@ Abre **Editar → Ajustes → Zettelkasten**:
 - **Plantilla**: plantilla del frontmatter. Marcadores admitidos: `title`,
   `citation`, `cite` y `date` (con formato Moment.js, p. ej.
   `YYYY-MM-DDTHH:mm:ssZ`).
-- **Incluir comentarios / texto resaltado** de las anotaciones.
 
 ## Uso
 
-Selecciona un único elemento regular en la biblioteca, haz clic derecho y
-elige alguna de estas opciones:
+Selecciona un único elemento regular en la biblioteca, haz clic derecho y abre
+el submenú **Zettelkasten**:
 
-- **Copiar nota de bibliografía**
-- **Crear archivo de nota de bibliografía**
-- **Actualizar anotaciones**
-
-La nota incluye las anotaciones de los PDF (comentario y texto resaltado) y las
-notas hijas del elemento.
+- **Copiar nota de bibliografía**: solo la cabecera YAML.
+- **Copiar nota con anotaciones**: cabecera + anotaciones de los PDF
+  (comentario y texto resaltado) y notas hijas.
+- **Crear archivo de nota de bibliografía**: solo la cabecera YAML.
+- **Crear archivo con anotaciones**: cabecera + anotaciones y notas hijas.
+- **Actualizar anotaciones**: reemplaza el cuerpo de un archivo ya creado.
 
 Si el archivo ya existe, al crearlo se muestra un aviso y no se sobrescribe.
 

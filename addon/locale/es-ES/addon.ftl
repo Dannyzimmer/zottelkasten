@@ -1,5 +1,6 @@
 no-item-selected = Selecciona exactamente un elemento bibliográfico.
 copied = Nota de bibliografía copiada al portapapeles.
+copied-with-annotations = Nota con anotaciones copiada al portapapeles.
 file-created = Archivo creado: { $path }
 file-updated = Anotaciones actualizadas: { $path }
 no-annotations = No hay anotaciones ni notas hijas que escribir.

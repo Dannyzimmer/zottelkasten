@@ -8,7 +8,7 @@ export interface RenderData {
   cite: string;
 }
 
-export function renderNote(item: Zotero.Item, data: RenderData): string {
+export function renderNote(item: Zotero.Item, data: RenderData, body = ""): string {
   const template = getPref("template") || "";
   const title = String(item.getField("title") ?? "");
 
@@ -23,9 +23,9 @@ export function renderNote(item: Zotero.Item, data: RenderData): string {
     .replace(/\{\{cite\}\}/g, yamlQuote(data.cite))
     .replace(/\{\{date:([^}]+)\}\}/g, (_match, pattern: string) => formatNow(pattern));
 
-  const body = renderBody(item);
-  if (body) {
-    output = `${output.replace(/\s*$/, "")}\n\n\n${body}`;
+  const trimmedBody = body.trim();
+  if (trimmedBody) {
+    output = `${output.replace(/\s*$/, "")}\n\n\n${trimmedBody}`;
   }
 
   return output;
@@ -43,16 +43,14 @@ export function renderBody(item: Zotero.Item): string {
 }
 
 function buildAnnotationBlocks(annotations: ItemAnnotation[]): string[] {
-  const showComments = getPref("showComments");
-  const showHighlights = getPref("showHighlights");
   const blocks: string[] = [];
 
   for (const annotation of annotations) {
     const parts: string[] = [];
-    if (showComments && annotation.comment) {
+    if (annotation.comment) {
       parts.push(annotation.comment);
     }
-    if (showHighlights && annotation.text) {
+    if (annotation.text) {
       parts.push(`> ${annotation.text.replace(/\r?\n/g, "\n> ")}`);
     }
     if (parts.length) {

@@ -24,6 +24,7 @@ export interface MenuShowingContext extends MenuContext {
 interface BuiltNote {
   content: string;
   cite: string;
+  body: string;
 }
 
 function getTargetItem(context: MenuContext): Zotero.Item | null {
@@ -34,15 +35,25 @@ function getTargetItem(context: MenuContext): Zotero.Item | null {
   return items[0];
 }
 
-function buildNote(item: Zotero.Item): BuiltNote {
+function buildNote(item: Zotero.Item, includeAnnotations: boolean): BuiltNote {
   const { citation, cite } = generateCitation(item);
+  const body = includeAnnotations ? renderBody(item) : "";
   return {
-    content: renderNote(item, { citation, cite }),
+    content: renderNote(item, { citation, cite }, body),
     cite,
+    body,
   };
 }
 
 export async function runCopy(context: MenuContext): Promise<void> {
+  await copyNote(context, false);
+}
+
+export async function runCopyWithAnnotations(context: MenuContext): Promise<void> {
+  await copyNote(context, true);
+}
+
+async function copyNote(context: MenuContext, includeAnnotations: boolean): Promise<void> {
   const item = getTargetItem(context);
   if (!item) {
     alert(getString("no-item-selected"));
@@ -50,15 +61,27 @@ export async function runCopy(context: MenuContext): Promise<void> {
   }
 
   try {
-    const note = buildNote(item);
+    const note = buildNote(item, includeAnnotations);
+    if (includeAnnotations && !note.body.trim()) {
+      notify(getString("no-annotations"));
+      return;
+    }
     copyToClipboard(note.content);
-    notify(getString("copied"));
+    notify(getString(includeAnnotations ? "copied-with-annotations" : "copied"));
   } catch (error) {
     alert(getString("error-generic", { error: String(error) }));
   }
 }
 
 export async function runCreateFile(context: MenuContext): Promise<void> {
+  await createNoteFile(context, false);
+}
+
+export async function runCreateFileWithAnnotations(context: MenuContext): Promise<void> {
+  await createNoteFile(context, true);
+}
+
+async function createNoteFile(context: MenuContext, includeAnnotations: boolean): Promise<void> {
   const item = getTargetItem(context);
   if (!item) {
     alert(getString("no-item-selected"));
@@ -66,7 +89,11 @@ export async function runCreateFile(context: MenuContext): Promise<void> {
   }
 
   try {
-    const note = buildNote(item);
+    const note = buildNote(item, includeAnnotations);
+    if (includeAnnotations && !note.body.trim()) {
+      notify(getString("no-annotations"));
+      return;
+    }
     const path = await writeNoteFile(note.cite, note.content);
     notify(getString("file-created", { path }));
   } catch (error) {

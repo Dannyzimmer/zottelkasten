@@ -1,6 +1,12 @@
+menu-root =
+    .label = Zettelkasten
 menu-copy =
     .label = Copiar nota de bibliografía
+menu-copy-with-annotations =
+    .label = Copiar nota con anotaciones
 menu-create-file =
     .label = Crear archivo de nota de bibliografía
+menu-create-file-with-annotations =
+    .label = Crear archivo con anotaciones
 menu-update =
     .label = Actualizar anotaciones

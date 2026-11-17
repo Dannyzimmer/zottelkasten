@@ -1,5 +1,6 @@
 no-item-selected = Select exactly one bibliographic item.
 copied = Bibliography note copied to clipboard.
+copied-with-annotations = Note with annotations copied to clipboard.
 file-created = File created: { $path }
 file-updated = Annotations updated: { $path }
 no-annotations = There are no annotations or child notes to write.

@@ -5,7 +5,9 @@ import {
   type MenuShowingContext,
   hasNoteFile,
   runCopy,
+  runCopyWithAnnotations,
   runCreateFile,
+  runCreateFileWithAnnotations,
   runUpdateAnnotations,
 } from "./actions";
 
@@ -20,33 +22,53 @@ export function registerMenu(): void {
     target: "main/library/item",
     menus: [
       {
-        menuType: "menuitem",
-        l10nID: getLocaleID("menu-copy"),
+        menuType: "submenu",
+        l10nID: getLocaleID("menu-root"),
         icon: MENU_ICON,
-        onCommand: (_event: Event, context: MenuContext) => runCopy(context),
-      },
-      {
-        menuType: "menuitem",
-        l10nID: getLocaleID("menu-create-file"),
-        icon: MENU_ICON,
-        onCommand: (_event: Event, context: MenuContext) => runCreateFile(context),
-      },
-      {
-        menuType: "menuitem",
-        l10nID: getLocaleID("menu-update"),
-        icon: MENU_ICON,
-        onShowing: (_event: Event, context: MenuShowingContext) => {
-          const items = context.items ?? [];
-          const item = items.length === 1 && items[0].isRegularItem() ? items[0] : null;
-          if (!item) {
-            context.setEnabled(false);
-            return;
-          }
-          hasNoteFile(item)
-            .then((exists) => context.setEnabled(!!exists))
-            .catch(() => context.setEnabled(false));
-        },
-        onCommand: (_event: Event, context: MenuContext) => runUpdateAnnotations(context),
+        menus: [
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-copy"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCopy(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-copy-with-annotations"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCopyWithAnnotations(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-create-file"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) => runCreateFile(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-create-file-with-annotations"),
+            icon: MENU_ICON,
+            onCommand: (_event: Event, context: MenuContext) =>
+              runCreateFileWithAnnotations(context),
+          },
+          {
+            menuType: "menuitem",
+            l10nID: getLocaleID("menu-update"),
+            icon: MENU_ICON,
+            onShowing: (_event: Event, context: MenuShowingContext) => {
+              const items = context.items ?? [];
+              const item = items.length === 1 && items[0].isRegularItem() ? items[0] : null;
+              if (!item) {
+                context.setEnabled(false);
+                return;
+              }
+              hasNoteFile(item)
+                .then((exists) => context.setEnabled(!!exists))
+                .catch(() => context.setEnabled(false));
+            },
+            onCommand: (_event: Event, context: MenuContext) => runUpdateAnnotations(context),
+          },
+        ],
       },
     ],
   });

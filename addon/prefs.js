@@ -1,7 +1,5 @@
 pref("outputDir", "");
 pref("styleID", "http://www.zotero.org/styles/apa");
-pref("showComments", true);
-pref("showHighlights", true);
 pref(
   "template",
   `---

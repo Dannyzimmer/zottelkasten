@@ -9,8 +9,6 @@ declare namespace _ZoteroTypes {
     PluginPrefsMap: {
       "outputDir": string;
       "styleID": string;
-      "showComments": boolean;
-      "showHighlights": boolean;
       "template": string;
     };
   }

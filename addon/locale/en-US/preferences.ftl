@@ -7,7 +7,3 @@ prefs-style-label = Citation style
 prefs-style-help = CSL style ID. Default: APA 7th edition (http://www.zotero.org/styles/apa).
 prefs-template-label = Template
 prefs-template-help = Placeholders: title, citation, cite and date (e.g. YYYY-MM-DDTHH:mm:ssZ).
-prefs-show-comments =
-    .label = Include annotation comments
-prefs-show-highlights =
-    .label = Include highlighted text as a quote
