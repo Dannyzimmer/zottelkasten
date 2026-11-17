@@ -10,6 +10,8 @@ item's PDF/EPUB annotations and child notes.
 - YAML frontmatter with title, date, full citation, short citation, type and
   tags.
 - Optional annotations: highlight comments, highlighted text and child notes.
+- Highlights are grouped under `## Chapter` headings when the PDF or EPUB has
+  an outline/table of contents.
 - Update the annotations of an existing note while keeping its YAML header.
 - APA 7th edition by default, with a configurable CSL style.
 
@@ -85,6 +87,9 @@ Notes:
   avoid data loss.
 - PDF/EPUB note annotations without highlighted text are not included in either
   action.
+- When the document has an outline/table of contents, highlights are grouped
+  under `## Chapter` headings. Documents without an outline/TOC, or highlights
+  before the first entry, are copied without a heading.
 
 ## Updates
 

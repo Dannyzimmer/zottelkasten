@@ -1,8 +1,14 @@
 import { htmlToMarkdown } from "../utils/html";
 
+export type AttachmentType = "pdf" | "epub" | "other";
+
 export interface ItemAnnotation {
   comment: string;
   text: string;
+  attachmentID: number;
+  attachmentType: AttachmentType;
+  pageIndex: number | null;
+  cfi: string | null;
 }
 
 /**
@@ -31,6 +37,12 @@ export async function collectAnnotations(item: Zotero.Item): Promise<ItemAnnotat
 
     await ensureChildItems(attachment);
 
+    const attachmentType: AttachmentType = attachment.isPDFAttachment()
+      ? "pdf"
+      : (attachment as any).isEPUBAttachment?.()
+        ? "epub"
+        : "other";
+
     const annotations = attachment
       .getAnnotations()
       .slice()
@@ -41,9 +53,26 @@ export async function collectAnnotations(item: Zotero.Item): Promise<ItemAnnotat
       });
 
     for (const annotation of annotations) {
+      let position: any = null;
+      try {
+        position = JSON.parse((annotation as any).annotationPosition || "null");
+      } catch (error) {
+        Zotero.debug(`Zotero Zettelkasten: invalid annotation position: ${error}`);
+      }
+
+      const pageIndex = typeof position?.pageIndex === "number" ? position.pageIndex : null;
+      const cfi =
+        position?.type === "FragmentSelector" && typeof position?.value === "string"
+          ? position.value
+          : null;
+
       result.push({
         comment: String((annotation as any).annotationComment || "").trim(),
         text: String((annotation as any).annotationText || "").trim(),
+        attachmentID,
+        attachmentType,
+        pageIndex,
+        cfi,
       });
     }
   }

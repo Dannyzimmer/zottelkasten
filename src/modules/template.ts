@@ -1,7 +1,8 @@
 import { formatNow } from "../utils/date";
 import { getPref } from "../utils/prefs";
 import { yamlQuote } from "../utils/yaml";
-import { collectAnnotations, collectChildNotes } from "./annotations";
+import { type ItemAnnotation, collectAnnotations, collectChildNotes } from "./annotations";
+import { resolveChapter } from "./chapters";
 
 export interface RenderData {
   citation: string;
@@ -43,20 +44,52 @@ export async function renderChildNotes(item: Zotero.Item): Promise<string> {
  * quote and, below it, the annotation comment when present.
  */
 export async function renderHighlights(item: Zotero.Item): Promise<string> {
-  const blocks: string[] = [];
+  const noChapter: string[] = [];
+  const groups = new Map<string, { title: string; blocks: string[] }>();
+  const order: string[] = [];
 
   for (const annotation of await collectAnnotations(item)) {
     if (!annotation.text) {
       continue;
     }
-    const parts = [`> ${annotation.text.replace(/\r?\n/g, "\n> ")}`];
-    if (annotation.comment) {
-      parts.push(annotation.comment);
+
+    const block = formatHighlight(annotation);
+    const chapter = await resolveChapter(annotation);
+    if (!chapter) {
+      noChapter.push(block);
+      continue;
     }
-    blocks.push(parts.join("\n\n"));
+
+    const key = `${annotation.attachmentID}:${chapter.key}`;
+    let group = groups.get(key);
+    if (!group) {
+      group = { title: chapter.title, blocks: [] };
+      groups.set(key, group);
+      order.push(key);
+    }
+    group.blocks.push(block);
   }
 
-  return blocks.join("\n\n\n");
+  const sections: string[] = [];
+  if (noChapter.length) {
+    sections.push(noChapter.join("\n\n\n"));
+  }
+  for (const key of order) {
+    const group = groups.get(key);
+    if (group) {
+      sections.push(`## ${group.title}\n\n${group.blocks.join("\n\n\n")}`);
+    }
+  }
+
+  return sections.join("\n\n\n");
+}
+
+function formatHighlight(annotation: ItemAnnotation): string {
+  const parts = [`> ${annotation.text.replace(/\r?\n/g, "\n> ")}`];
+  if (annotation.comment) {
+    parts.push(annotation.comment);
+  }
+  return parts.join("\n\n");
 }
 
 /**
