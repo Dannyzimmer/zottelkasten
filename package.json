@@ -1,7 +1,7 @@
 {
   "name": "zotero-zettelkasten",
   "type": "module",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Export Zotero bibliography entries with annotations as Obsidian/Zettelkasten notes",
   "config": {
     "addonName": "Zotero Zettelkasten",
